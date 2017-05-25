@@ -4,8 +4,10 @@
 #include <iostream>
 #include <thread>
 #include <vector>
+#include <cppad/cppad.hpp>
 #include "Eigen-3.3/Eigen/Core"
 #include "Eigen-3.3/Eigen/QR"
+#include "Eigen-3.3/Eigen/LU"
 #include "MPC.h"
 #include "json.hpp"
 
@@ -98,8 +100,49 @@ int main() {
           * Both are in between [-1, 1].
           *
           */
-          double steer_value;
-          double throttle_value;
+          /* calculate coordinate transformation matrix */
+          Eigen::Matrix3d T;
+          T << std::cos(psi), -std::sin(psi), px,
+               std::sin(psi),  std::cos(psi), py,
+               0,              0,             1;        
+          /* T(0, 0) = std::cos(psi);
+          T(0, 1) = -std::sin(psi);
+          T(0, 2) = px;
+          T(1, 0) = std::sin(psi);
+          T(1, 1) = std::cos(psi);
+          T(1, 2) = py;
+          T(2, 0) = 0.0;
+          T(2, 1) = 0.0;
+          T(2, 2) = 1.0; */
+
+          Eigen::VectorXd  ptcx(ptsx.size());
+          Eigen::VectorXd  ptcy(ptsy.size());
+	  for(int i = 0; i < ptsx.size(); i++) {
+            Eigen::VectorXd pts(3);
+            Eigen::VectorXd ptst(3);
+            
+            pts << ptsx[i], ptsy[i], 1.0;
+            ptst = T.inverse()*pts;
+            ptcx(i) = ptst(0);
+            ptcy(i) = ptst(1);
+          }
+          cout << "ptcx: " << endl << ptcx << endl;
+          cout << "ptcy: " << endl << ptcy << endl;
+          Eigen::VectorXd coeffs = polyfit(ptcx, ptcy, 3);
+          
+          Eigen::VectorXd state(6);
+          double cte;
+          double epsi;
+
+          cte = polyeval(coeffs, 0);
+          epsi = -CppAD::atan(coeffs(1));
+          cout << "cte: " << cte << endl << "epsi: " << epsi << endl;
+
+          state << 0.0, 0.0, 0.0, v, cte, epsi;
+          vector<double> rc = mpc.Solve(state, coeffs);
+
+          double steer_value = -rc[0];
+          double throttle_value = rc[1];
 
           json msgJson;
           msgJson["steering_angle"] = steer_value;
@@ -111,6 +154,8 @@ int main() {
 
           //.. add (x,y) points to list here, points are in reference to the vehicle's coordinate system
           // the points in the simulator are connected by a Green line
+          mpc_x_vals = mpc.solx_;
+          mpc_y_vals = mpc.soly_;
 
           msgJson["mpc_x"] = mpc_x_vals;
           msgJson["mpc_y"] = mpc_y_vals;
@@ -118,6 +163,12 @@ int main() {
           //Display the waypoints/reference line
           vector<double> next_x_vals;
           vector<double> next_y_vals;
+
+          // copy 
+          next_x_vals.resize(ptcx.size());
+          Eigen::VectorXd::Map(&next_x_vals[0], ptcx.size()) = ptcx;
+          next_y_vals.resize(ptcy.size());
+          Eigen::VectorXd::Map(&next_y_vals[0], ptcy.size()) = ptcy;
 
           //.. add (x,y) points to list here, points are in reference to the vehicle's coordinate system
           // the points in the simulator are connected by a Yellow line
