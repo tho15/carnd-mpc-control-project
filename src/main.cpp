@@ -126,8 +126,8 @@ int main() {
             ptcx(i) = ptst(0);
             ptcy(i) = ptst(1);
           }
-          cout << "ptcx: " << endl << ptcx << endl;
-          cout << "ptcy: " << endl << ptcy << endl;
+          //cout << "ptcx: " << endl << ptcx << endl;
+          //cout << "ptcy: " << endl << ptcy << endl;
           Eigen::VectorXd coeffs = polyfit(ptcx, ptcy, 3);
           
           Eigen::VectorXd state(6);
@@ -138,6 +138,16 @@ int main() {
           epsi = -CppAD::atan(coeffs(1));
           cout << "cte: " << cte << endl << "epsi: " << epsi << endl;
 
+          // taking account command's latency?
+          /* const double latency = 0.1;
+          const double Lf = 2.67;
+
+          double steering_angle = j[1]["steering_angle"];
+
+          double dx  = v*latency;
+          double dpsi = (v*steering_angle/Lf)*latency; */
+
+          //state << dx, 0.0, dpsi, v, cte, epsi;
           state << 0.0, 0.0, 0.0, v, cte, epsi;
           vector<double> rc = mpc.Solve(state, coeffs);
 
