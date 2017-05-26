@@ -68,9 +68,9 @@ Please (do your best to) stick to [Google's C++ style guide](https://google.gith
 
 The model used in this project is a kinematic bicycle model. The model ignores tire forces, gravity, and mass. 
 
-		x(t+1) = x(t) + v(t)*cos(&#936(t))*dt
-		y(t+1) = y(t) + v(t)*sin(&#936(t))*dt
-		&#936(t+1) = &#936(t)+v(t)*&#948*dt
+		x(t+1) = x(t) + v(t)*cos(&#936;(t))*dt
+		y(t+1) = y(t) + v(t)*sin(&#936;(t))*dt
+		&#936;(t+1) = &#936;(t)+v(t)*&#948;*dt
 
 
 ### Timestep Length and Elapsed Duration
