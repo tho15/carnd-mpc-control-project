@@ -64,15 +64,14 @@ Please (do your best to) stick to [Google's C++ style guide](https://google.gith
 
 ## Project Instructions and Rubric
 
-Note: regardless of the changes you make, your project must be buildable using
-cmake and make!
-
-More information is only accessible by people who are already enrolled in Term 2
-of CarND. If you are enrolled, see [the project page](https://classroom.udacity.com/nanodegrees/nd013/parts/40f38239-66b6-46ec-ae68-03afd8a601c8/modules/f1820894-8322-4bb3-81aa-b26b3c6dcbaf/lessons/b1ff3be0-c904-438e-aad3-2b5379f0e0c3/concepts/1a2255a0-e23c-44cf-8d41-39b8a3c8264a)
-for instructions and the project rubric.
 ### The Model
 
-Student describes their model in detail. This includes the state, actuators and update equations.
+The model used in this project is a kinematic bicycle model. The model ignores tire forces, gravity, and mass. 
+
+		x(t+1) = x(t) + v(t)*cos(&#936(t))*dt
+		y(t+1) = y(t) + v(t)*sin(&#936(t))*dt
+		&#936(t+1) = &#936(t)+v(t)*&#948*dt
+
 
 ### Timestep Length and Elapsed Duration
 
