@@ -70,37 +70,31 @@ cmake and make!
 More information is only accessible by people who are already enrolled in Term 2
 of CarND. If you are enrolled, see [the project page](https://classroom.udacity.com/nanodegrees/nd013/parts/40f38239-66b6-46ec-ae68-03afd8a601c8/modules/f1820894-8322-4bb3-81aa-b26b3c6dcbaf/lessons/b1ff3be0-c904-438e-aad3-2b5379f0e0c3/concepts/1a2255a0-e23c-44cf-8d41-39b8a3c8264a)
 for instructions and the project rubric.
+### The Model
 
-## Hints!
+Student describes their model in detail. This includes the state, actuators and update equations.
 
-* You don't have to follow this directory structure, but if you do, your work
-  will span all of the .cpp files here. Keep an eye out for TODOs.
+### Timestep Length and Elapsed Duration
 
-## Call for IDE Profiles Pull Requests
+Student discusses the reasoning behind the chosen N (timestep length) and dt (elapsed duration between timesteps) values. Additionally the student details the previous values tried.
 
-Help your fellow students!
+### Polynomial Fitting and MPC Preprocessing
 
-We decided to create Makefiles with cmake to keep this project as platform
-agnostic as possible. Similarly, we omitted IDE profiles in order to we ensure
-that students don't feel pressured to use one IDE or another.
+A polynomial is fitted to waypoints.
 
-However! I'd love to help people get up and running with their IDEs of choice.
-If you've created a profile for an IDE that you think other students would
-appreciate, we'd love to have you add the requisite profile files and
-instructions to ide_profiles/. For example if you wanted to add a VS Code
-profile, you'd add:
+If the student preprocesses waypoints, the vehicle state, and/or actuators prior to the MPC procedure it is described.
 
-* /ide_profiles/vscode/.vscode
-* /ide_profiles/vscode/README.md
+### Model Predictive Control with Latency
 
-The README should explain what the profile does, how to take advantage of it,
-and how to install it.
+The student implements Model Predictive Control that handles a 100 millisecond latency. Student provides details on how they deal with latency.
 
-Frankly, I've never been involved in a project with multiple IDE profiles
-before. I believe the best way to handle this would be to keep them out of the
-repo root to avoid clutter. My expectation is that most profiles will include
-instructions to copy files to a new location to get picked up by the IDE, but
-that's just a guess.
+## Result and Reflection
 
-One last note here: regardless of the IDE used, every submitted project must
-still be compilable with cmake and make./
+Here is a [link](https://youtu.be/3990vbUDs7I) to my final video output:
+
+<p align="center">
+    <a href="https://www.youtube.com/watch?v=3990vbUDs7I">
+        <img src="https://img.youtube.com/vi/rzDsFfvd9T0/0.jpg" alt="video output">
+    </a>
+</p>
+
