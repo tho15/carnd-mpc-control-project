@@ -5,7 +5,10 @@
 
 using CppAD::AD;
 
-// TODO: Set the timestep length and duration
+// Set the timestep length and duration
+// Good settings: ref_v = 30, N = 10, dt = 0.05
+//                ref_v = 30, N = 12, dt = 0.04
+//                ref_v = 40, N = 10, dt = 0.035
 size_t N = 12;
 double dt = 0.04;
 
@@ -45,7 +48,7 @@ class FG_eval {
 
   typedef CPPAD_TESTVECTOR(AD<double>) ADvector;
   void operator()(ADvector& fg, const ADvector& vars) {
-    // TODO: implement MPC
+    // implement MPC
     // fg a vector of constraints, vars is state & actuators vector
     // NOTE: You'll probably go back and forth between this function and
     // the Solver function below.
@@ -128,14 +131,14 @@ vector<double> MPC::Solve(Eigen::VectorXd state, Eigen::VectorXd coeffs) {
   size_t i;
   typedef CPPAD_TESTVECTOR(double) Dvector;
 
-  // TODO: Set the number of model variables (includes both states and inputs).
+  // Set the number of model variables (includes both states and inputs).
   // For example: If the state is a 4 element vector, the actuators is a 2
   // element vector and there are 10 timesteps. The number of variables is:
   //
   // 4 * 10 + 2 * 9
   size_t n_vars = 6*N + 2*(N-1);
 
-  // TODO: Set the number of constraints
+  // Set the number of constraints
   size_t n_constraints = 6*N;
 
   // Initial value of the independent variables.
@@ -161,7 +164,7 @@ vector<double> MPC::Solve(Eigen::VectorXd state, Eigen::VectorXd coeffs) {
 
   Dvector vars_lowerbound(n_vars);
   Dvector vars_upperbound(n_vars);
-  // TODO: Set lower and upper limits for variables.
+  // Set lower and upper limits for variables.
   for(int i = 0; i < delta_start; i++) {
     vars_lowerbound[i] = -1.0e19;
     vars_upperbound[i] = 1.0e19;
@@ -244,7 +247,7 @@ vector<double> MPC::Solve(Eigen::VectorXd state, Eigen::VectorXd coeffs) {
     soly_[i] = solution.x[y_start +i];
   }
 
-  // TODO: Return the first actuator values. The variables can be accessed with
+  // Return the first actuator values. The variables can be accessed with
   // `solution.x[i]`.
   //
   // {...} is shorthand for creating a vector, so auto x1 = {1.0,2.0}
