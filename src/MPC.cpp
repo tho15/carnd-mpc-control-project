@@ -6,8 +6,8 @@
 using CppAD::AD;
 
 // TODO: Set the timestep length and duration
-size_t N = 15;
-double dt = 0.035;
+size_t N = 12;
+double dt = 0.04;
 
 // This value assumes the model presented in the classroom is used.
 //
@@ -39,6 +39,8 @@ class FG_eval {
  public:
   // Fitted polynomial coefficients
   Eigen::VectorXd coeffs;
+  double cur_steering;
+
   FG_eval(Eigen::VectorXd coeffs) { this->coeffs = coeffs; }
 
   typedef CPPAD_TESTVECTOR(AD<double>) ADvector;
@@ -167,8 +169,8 @@ vector<double> MPC::Solve(Eigen::VectorXd state, Eigen::VectorXd coeffs) {
 
   // -60 and 60 degree in radians
   for(int i = delta_start; i < a_start; i++) {
-    vars_lowerbound[i] = -1.047;
-    vars_upperbound[i] = 1.047;
+    vars_lowerbound[i] = -0.436332; //-1.047;
+    vars_upperbound[i] = 0.436332; //1.047;
   }
 
   // acceleration/deceleration upper and lower limits

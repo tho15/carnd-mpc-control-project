@@ -79,7 +79,7 @@ int main() {
     // The 4 signifies a websocket message
     // The 2 signifies a websocket event
     string sdata = string(data).substr(0, length);
-    cout << sdata << endl;
+    //cout << sdata << endl;
     if (sdata.size() > 2 && sdata[0] == '4' && sdata[1] == '2') {
       string s = hasData(sdata);
       if (s != "") {
@@ -139,16 +139,13 @@ int main() {
           cout << "cte: " << cte << endl << "epsi: " << epsi << endl;
 
           // taking account command's latency?
-          /* const double latency = 0.1;
+          const double latency = 0.1;
           const double Lf = 2.67;
 
-          double steering_angle = j[1]["steering_angle"];
+          double dx  = v*latency;  // car should have moved in x-direction for 100 millisec
 
-          double dx  = v*latency;
-          double dpsi = (v*steering_angle/Lf)*latency; */
-
-          //state << dx, 0.0, dpsi, v, cte, epsi;
-          state << 0.0, 0.0, 0.0, v, cte, epsi;
+          state << dx, 0.0, 0.0, v, cte, epsi;
+          //state << 0.0, 0.0, 0.0, v, cte, epsi;
           vector<double> rc = mpc.Solve(state, coeffs);
 
           double steer_value = -rc[0];
@@ -188,7 +185,7 @@ int main() {
 
 
           auto msg = "42[\"steer\"," + msgJson.dump() + "]";
-          std::cout << msg << std::endl;
+          //std::cout << msg << std::endl;
           // Latency
           // The purpose is to mimic real driving conditions where
           // the car does actuate the commands instantly.

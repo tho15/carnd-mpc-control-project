@@ -14,6 +14,7 @@ class MPC {
 
   vector<double> solx_;
   vector<double> soly_;
+  double curSteering_;  // current car steering angle
 
   // Solve the model given an initial state and polynomial coefficients.
   // Return the first actuatotions.
