@@ -27,7 +27,7 @@ const double Lf = 2.67;
 
 double ref_cte = 0;
 double ref_epsi = 0;
-double ref_v = 50;
+double ref_v = 70;
 
 size_t x_start = 0;
 size_t y_start = x_start + N;
@@ -65,6 +65,7 @@ class FG_eval {
     for(int i = 0; i < N-1; i++) {
       fg[0] += CppAD::pow(vars[delta_start + i], 2);
       fg[0] += CppAD::pow(vars[a_start + i], 2);
+      fg[0] += CppAD::pow(vars[cte_start+i+1] - vars[cte_start+i], 2);
     }
 
     // minize the value gap between sequential actuation
