@@ -79,7 +79,7 @@ int main() {
     // The 4 signifies a websocket message
     // The 2 signifies a websocket event
     string sdata = string(data).substr(0, length);
-    //cout << sdata << endl;
+    cout << sdata << endl;
     if (sdata.size() > 2 && sdata[0] == '4' && sdata[1] == '2') {
       string s = hasData(sdata);
       if (s != "") {
@@ -141,17 +141,27 @@ int main() {
           // taking account command's latency?
           const double latency = 0.1;
           const double Lf = 2.67;
+          const double cur_d = j[1]["steering_angle"];
+          const double cur_a = j[1]["throttle"];
 
-          double dx  = v*latency;  // car should have moved in x-direction for 100 millisec
+          double dx = v*std::cos(cur_d)*latency;  // car should have moved in x-direction for 100 millisec
+          double dy = -v*std::sin(cur_d)*latency;
+          double dpsi = -(v*cur_d*latency)/Lf;
+          double dv = v + cur_a*latency;
+          
+          cte = polyeval(coeffs, dx);
+          epsi = -CppAD::atan(coeffs(1)+coeffs(2)*dx+coeffs(3)*dx*dx);
 
-          state << dx, 0.0, 0.0, v, cte, epsi;
+          state << dx, dy, dpsi, dv, cte, epsi;
+          //state << dx, 0.0, 0.0, v, cte, epsi;
           //state << 0.0, 0.0, 0.0, v, cte, epsi;
           vector<double> rc = mpc.Solve(state, coeffs);
 
-          double steer_value = -rc[0];
+          double steer_value = -rc[0]/deg2rad(25);
           double throttle_value = rc[1];
 
           json msgJson;
+          cout << "steering angle: " << steer_value << endl << "throttle: " << throttle_value << endl;
           msgJson["steering_angle"] = steer_value;
           msgJson["throttle"] = throttle_value;
 
