@@ -89,7 +89,7 @@ The student implements Model Predictive Control that handles a 100 millisecond l
 
 ## Result and Reflection
 
-Here is a [link](https://www.youtube.com/9Wah9d0_8SA) to my final video output:
+Here is a [link](https://www.youtube.com/watch?v=9Wah9d0_8SA) to my final video output:
 
 <p align="center">
     <a href="https://www.youtube.com/watch?v=9Wah9d0_8SA">
