@@ -91,7 +91,26 @@ A 3rd order polynomial is fitted to waypoints in car coordinates. The waypoints 
 
 ### Model Predictive Control with Latency
 
-The student implements Model Predictive Control that handles a 100 millisecond latency. Student provides details on how they deal with latency.
+There is always a delay between the MPC computation to the executation of actuation command. For this project, the latency is assumed to be 100 millisecond. To handle the delay, we estimate the car's prospective state based on its current speed and heading direction. The result is used as car's initial state for MPC trajectory computation. Following code show how the propective state is estimated:
+
+          // taking account command's latency
+          const double latency = 0.1;
+          const double Lf = 2.67;
+          const double cur_d = j[1]["steering_angle"];
+          const double cur_a = j[1]["throttle"];
+
+          double dx = v*std::cos(cur_d)*latency;  // car should have moved in x-direction for 100 millisec
+          double dy = -v*std::sin(cur_d)*latency;
+          double dpsi = -(v*cur_d*latency)/Lf;
+          double dv = v + cur_a*latency;
+          
+          cte = polyeval(coeffs, dx);
+          epsi = -CppAD::atan(coeffs(1)+coeffs(2)*dx+coeffs(3)*dx*dx);
+
+          state << dx, dy, dpsi, dv, cte, epsi;
+          vector<double> rc = mpc.Solve(state, coeffs);
+
+Another approach to handle the latency is to fix the actuation values to previous values for the duration of latency. This approach requres the latency is an closed multiple of *dt*. I believe the approach we take is more flexible. The calulation of the initial position after delay is only approximate. For larger latency, we need to use a more accurate formula.
 
 ## Result and Reflection
 
