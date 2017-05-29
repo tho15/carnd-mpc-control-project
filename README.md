@@ -68,14 +68,11 @@ Please (do your best to) stick to [Google's C++ style guide](https://google.gith
 
 The model used in this project is a kinematic model that is simplifications of dynamic models that ignore tire forces, gravity, and mass.The model describes the car state as [*x, y, &#936;, v, cte, e&#936;*]. The *x, y* are 2D cartesian coordinates of the car. *&#936;* is the orientation of the car heading to. *v* is car velocity, *cte* is cross-track error while *e&#936;* is the orientation error.
 
-The car actuator inputs are [*&#948;, a*], where *&#948;* for steering angle and *a* for acceleration. 
+The car actuator inputs are [*&#948;, a*], where *&#948;* for steering angle and *a* for acceleration. With these two inputs, the kinematic model can be described with following equations:
 
 ![kinematicModel](images/model_equations.png)
 
-		x(t+1) = x(t) + v(t)*cos(&#936;(t))*dt
-		y(t+1) = y(t) + v(t)*sin(&#936;(t))*dt
-		&#936;(t+1) = &#936;(t)+v(t)*&#948;*dt
-
+Here *Lf* is the distance between the center of mass of the vehicle and the front wheels.
 
 ### Timestep Length and Elapsed Duration
 
