@@ -68,7 +68,7 @@ Please (do your best to) stick to [Google's C++ style guide](https://google.gith
 
 The model used in this project is a kinematic bicycle model. The model ignores tire forces, gravity, and mass. Following equations describe the system model:
 
-![kinematicModel](image/model_equations.png)
+![kinematicModel](images/model_equations.png)
 
 		x(t+1) = x(t) + v(t)*cos(&#936;(t))*dt
 		y(t+1) = y(t) + v(t)*sin(&#936;(t))*dt
