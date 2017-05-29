@@ -66,7 +66,9 @@ Please (do your best to) stick to [Google's C++ style guide](https://google.gith
 
 ### The Model
 
-The model used in this project is a kinematic model that is simplifications of dynamic models that ignore tire forces, gravity, and mass.The model describes the car state as [*x, y, &#936;, v, cte, e&#936;*]. The *x, y* are 2D cartesian coordinates of the car. *&#936;* is the orientation of the car heading to.
+The model used in this project is a kinematic model that is simplifications of dynamic models that ignore tire forces, gravity, and mass.The model describes the car state as [*x, y, &#936;, v, cte, e&#936;*]. The *x, y* are 2D cartesian coordinates of the car. *&#936;* is the orientation of the car heading to. *v* is car velocity, *cte* is cross-track error while *e&#936;* is the orientation error.
+
+The car actuator inputs are [*&#948;, a*], where *&#948;* for steering angle and *a* for acceleration. 
 
 ![kinematicModel](images/model_equations.png)
 
