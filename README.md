@@ -76,7 +76,9 @@ Here *Lf* is the distance between the center of mass of the vehicle and the fron
 
 ### Timestep Length and Elapsed Duration
 
-Student discusses the reasoning behind the chosen N (timestep length) and dt (elapsed duration between timesteps) values. Additionally the student details the previous values tried.
+The MPC prediction horizon *T* is the duration over which future predictions are made. It is determined by the number of timesteps in the horizon *N* and elapsed duration between timesteps *dt*. *N* determines the number of variables the optimized by MPC. It is also the major driver of computational cost. A longer *dt* could result in less frequent actuations, which makes it harder to accurately approximate a continuous reference trajectory. But a shorter *dt* requires larger *N* for a fixed prediction horizon, thus increases computational cost.
+
+Since our goal is to drive the car in about 50 miles per hour on the track, which is about 22 meters per second. We limit the prediction horizon to be about 10 meters. Beyond that, the track can change enough that it won't make sense to predict any futher into the future. We start test with reference velocity from 20 miles, and limit our searh of *N* from 10 - 15, *dt* from 0.025 - 0.75. We gradually increased reference velocity once we obtain a good result and adjust the values again. Our final choices of *N* is 10, and *dt* is 0.5. These two values seem work well for reference velocity from 20 to 60 miles per hour. When velocity increae to higher than 80 miles per hour, it has high swing on the second turn after the bridge. 
 
 ### Polynomial Fitting and MPC Preprocessing
 
