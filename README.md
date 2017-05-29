@@ -66,7 +66,7 @@ Please (do your best to) stick to [Google's C++ style guide](https://google.gith
 
 ### The Model
 
-The model used in this project is a kinematic bicycle model. The model ignores tire forces, gravity, and mass. Following equations describe the system model:
+The model used in this project is a kinematic model that is simplifications of dynamic models that ignore tire forces, gravity, and mass.The model describes the car state as [*x, y, &#936;, v, cte, e&#936;*]. The *x, y* are 2D cartesian coordinates of the car. *&#936;* is the orientation of the car heading to.
 
 ![kinematicModel](images/model_equations.png)
 
