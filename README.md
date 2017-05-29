@@ -110,7 +110,7 @@ There is always a delay between the MPC computation to the executation of actuat
           state << dx, dy, dpsi, dv, cte, epsi;
           vector<double> rc = mpc.Solve(state, coeffs);
 
-Another approach to handle the latency is to fix the actuation values to previous values for the duration of latency. This approach requires the latency is a closed multiple of *dt*. I believe the approach we take is more flexible. But the calulation of the initial position in current implementation after delay is only approximate. For larger latency, we need to use a more accurate formula.
+Another approach to handle the latency is to fix the actuation values to previous values for the duration of latency. This approach requires the latency is a close multiple of *dt*. I believe the approach we take is more flexible. But the calulation of the initial position in current implementation after delay is only approximate. For larger latency, we need to use a more accurate formula.
 
 ## Result and Reflection
 
@@ -122,3 +122,4 @@ Here is a [link](https://www.youtube.com/watch?v=9Wah9d0_8SA) to my final video 
     </a>
 </p>
 
+We get much better result using MPC model compare to PID control. The only issue is when we go to very high speed (>80 miles/hour in this case), we'll see a big swing when there are two close turns. This may be due to the cost functions that require constant velocity. For very high speed, we may need a more flexible constraints on velocity and acceleration.
