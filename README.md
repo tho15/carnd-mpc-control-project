@@ -110,7 +110,7 @@ There is always a delay between the MPC computation to the executation of actuat
           state << dx, dy, dpsi, dv, cte, epsi;
           vector<double> rc = mpc.Solve(state, coeffs);
 
-Another approach to handle the latency is to fix the actuation values to previous values for the duration of latency. This approach requres the latency is an closed multiple of *dt*. I believe the approach we take is more flexible. The calulation of the initial position after delay is only approximate. For larger latency, we need to use a more accurate formula.
+Another approach to handle the latency is to fix the actuation values to previous values for the duration of latency. This approach requires the latency is a closed multiple of *dt*. I believe the approach we take is more flexible. But the calulation of the initial position in current implementation after delay is only approximate. For larger latency, we need to use a more accurate formula.
 
 ## Result and Reflection
 
