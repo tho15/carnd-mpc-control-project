@@ -76,9 +76,9 @@ Here *Lf* is the distance between the center of mass of the vehicle and the fron
 
 ### Timestep Length and Elapsed Duration
 
-The MPC prediction horizon *T* is the duration over which future predictions are made. It is determined by the number of timesteps in the horizon *N* and elapsed duration between timesteps *dt*. The *N* determines the number of variables the optimized by MPC. It is also the major driver of computational cost. A longer *dt* could result in less frequent actuations, which makes it harder to accurately approximate a continuous reference trajectory. But a shorter *dt* requires larger *N* for a fixed prediction horizon, thus increases computational cost.
+The MPC prediction horizon *T* is the duration over which future predictions are made. It is determined by the number of timesteps in the horizon *N* and elapsed duration between timesteps *dt*. The *N* determines the number of variables optimized by MPC. It is also the major driver of computational cost. A longer *dt* could result in less frequent actuations, which makes it harder to accurately approximate a continuous reference trajectory. But a shorter *dt* requires larger *N* for a fixed prediction horizon, thus increases computational cost.
 
-Since our goal is to drive the car in about 50 miles per hour on the track, which is about 22 meters per second. We limit the prediction horizon to be about 10 meters, which means our prediction horizon is about 0.5 seconds. Beyond that, the track can change enough that it won't make sense to predict any futher into the future. We start test with reference velocity from 20 miles, and limit our searh of *N* from 10 - 15, *dt* from 0.025 - 0.075. We gradually increased reference velocity once we obtain a good result and adjust the values again for cureent velocity. Our final choices of *N* is 10, and *dt* is 0.5. These two values seem work well for reference velocity from 20 to 60 miles per hour. When velocity increae to higher than 80 miles per hour, it has high swing on the second turn after the bridge. 
+Since our goal is to drive the car in about 50 miles per hour on the track, which is about 22 meters per second. We limit the prediction horizon to be about 10 meters, which means our prediction horizon is about 0.5 seconds. Beyond that, the track can change enough that it won't make sense to predict any futher into the future. We start test our implementation with reference velocity from 20 miles per hour, and limit our searh of *N* from 10 - 16, *dt* from 0.025 - 0.075. We gradually increased reference velocity once we obtain a good result and adjust the values again for the testing velocity. Our final choices of *N* is 10, and *dt* is 0.5. These two values seem work well for reference velocity from 20 to 60 miles per hour. Athough this settings works when the car speed go to 80 miles per hour in simulator, it does show high swing on the second turn after the bridge. This show we need to use a small *T* and different *N* and *dt* for speed higher than 80 miles per hour. 
 
 ### Polynomial Fitting and MPC Preprocessing
 
@@ -91,7 +91,7 @@ A 3rd order polynomial is fitted to waypoints in car coordinates. The waypoints 
 
 ### Model Predictive Control with Latency
 
-There is always a delay between the MPC computation to the executation of actuation command. For this project, the latency is assumed to be 100 millisecond. To handle the delay, we estimate the car's prospective state based on its current speed and heading direction. The result is used as car's initial state for MPC trajectory computation. Following code show how the propective state is estimated:
+There is always a delay from MPC computation to the executation of actuation command. For this project, the latency is assumed to be 100 millisecond. To handle the latency, we estimate the car's prospective state based on its current speed and heading direction. The result is used as car's initial state for MPC trajectory computation. Following code show how the propective state is estimated:
 
           // taking account command's latency
           const double latency = 0.1;
@@ -110,7 +110,7 @@ There is always a delay between the MPC computation to the executation of actuat
           state << dx, dy, dpsi, dv, cte, epsi;
           vector<double> rc = mpc.Solve(state, coeffs);
 
-Another approach to handle the latency is to fix the actuation values to previous values for the duration of latency. This approach requires the latency is a close multiple of *dt*. I believe the approach we take is more flexible. But the calulation of the initial position in current implementation after delay is only approximate. For larger latency, we need to use a more accurate formula.
+Another approach to handle the latency is to fix the actuation values to previous values for the duration of latency. This approach requires the latency to be close multiple of *dt*. I believe the approach we take is more flexible. But the calulation of the initial position in current implementation is only approximate. For larger latency, we should use a more accurate formula.
 
 ## Result and Reflection
 
